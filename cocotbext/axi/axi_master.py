@@ -37,7 +37,7 @@ from .address_space import Region
 from .reset import Reset
 
 
-# AXI master write helper objects
+# AXI manager write helper objects
 class AxiWriteCmd(NamedTuple):
     address: int
     data: bytes
@@ -71,7 +71,7 @@ class AxiWriteResp(NamedTuple):
     user: Union[list, None]
 
 
-# AXI master read helper objects
+# AXI manager read helper objects
 class AxiReadCmd(NamedTuple):
     address: int
     length: int
@@ -203,7 +203,7 @@ class AxiMasterWrite(Region, Reset):
         else:
             self.log = logging.getLogger(f"cocotb.{bus.aw._entity._name}")
 
-        self.log.debug("AXI master (write)")
+        self.log.debug("AXI manager (write)")
         self.log.debug("cocotbext-axi version %s", __version__)
         self.log.debug("Copyright (c) 2020 Alex Forencich")
         self.log.debug("https://github.com/alexforencich/cocotbext-axi")
@@ -251,7 +251,7 @@ class AxiMasterWrite(Region, Reset):
 
         super().__init__(2**self.address_width, **kwargs)
 
-        self.log.debug("AXI master configuration:")
+        self.log.debug("AXI manager configuration:")
         self.log.debug("  Address width: %d bits", self.address_width)
         self.log.debug("  ID width: %d bits", self.id_width)
         self.log.debug("  Byte size: %d bits", self.byte_size)
@@ -260,7 +260,7 @@ class AxiMasterWrite(Region, Reset):
         self.log.debug("  Max burst length: %d cycles (%d bytes)",
             self.max_burst_len, self.max_burst_len*self.byte_lanes)
 
-        self.log.debug("AXI master signals:")
+        self.log.debug("AXI manager signals:")
         for bus in (self.bus.aw, self.bus.w, self.bus.b):
             for sig in sorted(list(set().union(bus._signals, bus._optional_signals))):
                 if hasattr(bus, sig):
@@ -645,7 +645,7 @@ class AxiMasterRead(Region, Reset):
         else:
             self.log = logging.getLogger(f"cocotb.{bus.ar._entity._name}")
 
-        self.log.debug("AXI master (read)")
+        self.log.debug("AXI manager (read)")
         self.log.debug("cocotbext-axi version %s", __version__)
         self.log.debug("Copyright (c) 2020 Alex Forencich")
         self.log.debug("https://github.com/alexforencich/cocotbext-axi")
@@ -688,7 +688,7 @@ class AxiMasterRead(Region, Reset):
 
         super().__init__(2**self.address_width, **kwargs)
 
-        self.log.debug("AXI master configuration:")
+        self.log.debug("AXI manager configuration:")
         self.log.debug("  Address width: %d bits", self.address_width)
         self.log.debug("  ID width: %d bits", self.id_width)
         self.log.debug("  Byte size: %d bits", self.byte_size)
@@ -697,7 +697,7 @@ class AxiMasterRead(Region, Reset):
         self.log.debug("  Max burst length: %d cycles (%d bytes)",
             self.max_burst_len, self.max_burst_len*self.byte_lanes)
 
-        self.log.debug("AXI master signals:")
+        self.log.debug("AXI manager signals:")
         for bus in (self.bus.ar, self.bus.r):
             for sig in sorted(list(set().union(bus._signals, bus._optional_signals))):
                 if hasattr(bus, sig):

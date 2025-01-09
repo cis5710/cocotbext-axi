@@ -43,7 +43,7 @@ class AxiSlaveWrite(Reset):
         else:
             self.log = logging.getLogger(f"cocotb.{bus.aw._entity._name}")
 
-        self.log.debug("AXI slave model (write)")
+        self.log.debug("AXI subordinate model (write)")
         self.log.debug("cocotbext-axi version %s", __version__)
         self.log.debug("Copyright (c) 2021 Alex Forencich")
         self.log.debug("https://github.com/alexforencich/cocotbext-axi")
@@ -68,13 +68,13 @@ class AxiSlaveWrite(Reset):
 
         self.wstrb_present = hasattr(self.bus.w, "wstrb")
 
-        self.log.debug("AXI slave model configuration:")
+        self.log.debug("AXI subordinate model configuration:")
         self.log.debug("  Address width: %d bits", self.address_width)
         self.log.debug("  ID width: %d bits", self.id_width)
         self.log.debug("  Byte size: %d bits", self.byte_size)
         self.log.debug("  Data width: %d bits (%d bytes)", self.width, self.byte_lanes)
 
-        self.log.debug("AXI slave model signals:")
+        self.log.debug("AXI subordinate model signals:")
         for bus in (self.bus.aw, self.bus.w, self.bus.b):
             for sig in sorted(list(set().union(bus._signals, bus._optional_signals))):
                 if hasattr(bus, sig):
@@ -214,7 +214,7 @@ class AxiSlaveRead(Reset):
         else:
             self.log = logging.getLogger(f"cocotb.{bus.ar._entity._name}")
 
-        self.log.debug("AXI slave model (read)")
+        self.log.debug("AXI subordinate model (read)")
         self.log.debug("cocotbext-axi version %s", __version__)
         self.log.debug("Copyright (c) 2021 Alex Forencich")
         self.log.debug("https://github.com/alexforencich/cocotbext-axi")
@@ -234,13 +234,13 @@ class AxiSlaveRead(Reset):
 
         self.max_burst_size = (self.byte_lanes-1).bit_length()
 
-        self.log.debug("AXI slave model configuration:")
+        self.log.debug("AXI subordinate model configuration:")
         self.log.debug("  Address width: %d bits", self.address_width)
         self.log.debug("  ID width: %d bits", self.id_width)
         self.log.debug("  Byte size: %d bits", self.byte_size)
         self.log.debug("  Data width: %d bits (%d bytes)", self.width, self.byte_lanes)
 
-        self.log.debug("AXI slave model signals:")
+        self.log.debug("AXI subordinate model signals:")
         for bus in (self.bus.ar, self.bus.r):
             for sig in sorted(list(set().union(bus._signals, bus._optional_signals))):
                 if hasattr(bus, sig):
