@@ -43,10 +43,10 @@ class AxiLiteSlaveWrite(Reset):
         else:
             self.log = logging.getLogger(f"cocotb.{bus.aw._entity._name}")
 
-        self.log.info("AXI lite slave model (write)")
-        self.log.info("cocotbext-axi version %s", __version__)
-        self.log.info("Copyright (c) 2021 Alex Forencich")
-        self.log.info("https://github.com/alexforencich/cocotbext-axi")
+        self.log.debug("AXI lite slave model (write)")
+        self.log.debug("cocotbext-axi version %s", __version__)
+        self.log.debug("Copyright (c) 2021 Alex Forencich")
+        self.log.debug("https://github.com/alexforencich/cocotbext-axi")
 
         super().__init__(**kwargs)
 
@@ -65,18 +65,18 @@ class AxiLiteSlaveWrite(Reset):
 
         self.wstrb_present = hasattr(self.bus.w, "wstrb")
 
-        self.log.info("AXI lite slave model configuration:")
-        self.log.info("  Address width: %d bits", self.address_width)
-        self.log.info("  Byte size: %d bits", self.byte_size)
-        self.log.info("  Data width: %d bits (%d bytes)", self.width, self.byte_lanes)
+        self.log.debug("AXI lite slave model configuration:")
+        self.log.debug("  Address width: %d bits", self.address_width)
+        self.log.debug("  Byte size: %d bits", self.byte_size)
+        self.log.debug("  Data width: %d bits (%d bytes)", self.width, self.byte_lanes)
 
-        self.log.info("AXI lite slave model signals:")
+        self.log.debug("AXI lite slave model signals:")
         for bus in (self.bus.aw, self.bus.w, self.bus.b):
             for sig in sorted(list(set().union(bus._signals, bus._optional_signals))):
                 if hasattr(bus, sig):
-                    self.log.info("  %s width: %d bits", sig, len(getattr(bus, sig)))
+                    self.log.debug("  %s width: %d bits", sig, len(getattr(bus, sig)))
                 else:
-                    self.log.info("  %s: not present", sig)
+                    self.log.debug("  %s: not present", sig)
 
         if self.wstrb_present:
             assert self.byte_lanes == len(self.w_channel.bus.wstrb)
@@ -91,7 +91,7 @@ class AxiLiteSlaveWrite(Reset):
 
     def _handle_reset(self, state):
         if state:
-            self.log.info("Reset asserted")
+            self.log.debug("Reset asserted")
             if self._process_write_cr is not None:
                 self._process_write_cr.kill()
                 self._process_write_cr = None
@@ -100,7 +100,7 @@ class AxiLiteSlaveWrite(Reset):
             self.w_channel.clear()
             self.b_channel.clear()
         else:
-            self.log.info("Reset de-asserted")
+            self.log.debug("Reset de-asserted")
             if self._process_write_cr is None:
                 self._process_write_cr = cocotb.start_soon(self._process_write())
 
@@ -130,7 +130,7 @@ class AxiLiteSlaveWrite(Reset):
             b.bresp = AxiResp.OKAY
 
             if self.log.isEnabledFor(logging.INFO):
-                self.log.info("Write data awaddr: 0x%08x awprot: %s wstrb: 0x%02x data: %s",
+                self.log.debug("Write data awaddr: 0x%08x awprot: %s wstrb: 0x%02x data: %s",
                         addr, prot, strb, ' '.join((f'{c:02x}' for c in data)))
 
             for i in range(self.byte_lanes):
@@ -169,10 +169,10 @@ class AxiLiteSlaveRead(Reset):
         else:
             self.log = logging.getLogger(f"cocotb.{bus.ar._entity._name}")
 
-        self.log.info("AXI lite slave model (read)")
-        self.log.info("cocotbext-axi version %s", __version__)
-        self.log.info("Copyright (c) 2021 Alex Forencich")
-        self.log.info("https://github.com/alexforencich/cocotbext-axi")
+        self.log.debug("AXI lite slave model (read)")
+        self.log.debug("cocotbext-axi version %s", __version__)
+        self.log.debug("Copyright (c) 2021 Alex Forencich")
+        self.log.debug("https://github.com/alexforencich/cocotbext-axi")
 
         super().__init__(**kwargs)
 
@@ -186,18 +186,18 @@ class AxiLiteSlaveRead(Reset):
         self.byte_size = 8
         self.byte_lanes = self.width // self.byte_size
 
-        self.log.info("AXI lite slave model configuration:")
-        self.log.info("  Address width: %d bits", self.address_width)
-        self.log.info("  Byte size: %d bits", self.byte_size)
-        self.log.info("  Data width: %d bits (%d bytes)", self.width, self.byte_lanes)
+        self.log.debug("AXI lite slave model configuration:")
+        self.log.debug("  Address width: %d bits", self.address_width)
+        self.log.debug("  Byte size: %d bits", self.byte_size)
+        self.log.debug("  Data width: %d bits (%d bytes)", self.width, self.byte_lanes)
 
-        self.log.info("AXI lite slave model signals:")
+        self.log.debug("AXI lite slave model signals:")
         for bus in (self.bus.ar, self.bus.r):
             for sig in sorted(list(set().union(bus._signals, bus._optional_signals))):
                 if hasattr(bus, sig):
-                    self.log.info("  %s width: %d bits", sig, len(getattr(bus, sig)))
+                    self.log.debug("  %s width: %d bits", sig, len(getattr(bus, sig)))
                 else:
-                    self.log.info("  %s: not present", sig)
+                    self.log.debug("  %s: not present", sig)
 
         assert self.byte_lanes * self.byte_size == self.width
 
@@ -210,7 +210,7 @@ class AxiLiteSlaveRead(Reset):
 
     def _handle_reset(self, state):
         if state:
-            self.log.info("Reset asserted")
+            self.log.debug("Reset asserted")
             if self._process_read_cr is not None:
                 self._process_read_cr.kill()
                 self._process_read_cr = None
@@ -218,7 +218,7 @@ class AxiLiteSlaveRead(Reset):
             self.ar_channel.clear()
             self.r_channel.clear()
         else:
-            self.log.info("Reset de-asserted")
+            self.log.debug("Reset de-asserted")
             if self._process_read_cr is None:
                 self._process_read_cr = cocotb.start_soon(self._process_read())
 
@@ -244,7 +244,7 @@ class AxiLiteSlaveRead(Reset):
             await self.r_channel.send(r)
 
             if self.log.isEnabledFor(logging.INFO):
-                self.log.info("Read data araddr: 0x%08x arprot: %s data: %s",
+                self.log.debug("Read data araddr: 0x%08x arprot: %s data: %s",
                         addr, prot, ' '.join((f'{c:02x}' for c in data)))
 
 
